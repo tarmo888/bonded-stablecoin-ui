@@ -50,7 +50,7 @@ export const SelectStablecoin = () => {
     const { asset_2, symbol, params, bonded_state } = data[aa];
     const targetCurrency = getTargetCurrency(params, bonded_state);
     const interest_rate_percent = bonded_state ? Decimal.mul(bonded_state.interest_rate, 100).toNumber() : null;
-    if (!recentList.includes(aa)) {
+    if (!recentList.includes(aa) && config.reserves[params.reserve_asset]) {
       optionList.push(
         <Select.Option value={aa} key={aa}>
           <CoinIcon width="1em" style={{ marginRight: 10 }} height="1em" type={2} symbol={symbol} />
@@ -61,7 +61,7 @@ export const SelectStablecoin = () => {
     }
   }
 
-  const optionListRecent = loaded && recentList.filter(aa => data[aa]).map((aa) => {
+  const optionListRecent = loaded && recentList.filter(aa => data[aa] && config.reserves[data[aa].params.reserve_asset]).map((aa) => {
     const { asset_2, symbol, params, bonded_state } = data[aa];
     const targetCurrency = getTargetCurrency(params, bonded_state);
     const interest_rate_percent = bonded_state ? Decimal.mul(bonded_state.interest_rate, 100).toNumber() : null;
